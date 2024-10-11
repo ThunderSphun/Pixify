@@ -28,8 +28,8 @@ add_library(DearImGui STATIC
 target_include_directories(DearImGui PUBLIC vendor/dearImgui vendor/dearImgui/misc/cpp)
 link_libraries(DearImGui)
 
-add_library(stb STATIC vendor/stb/stb_image_write.h)
-target_include_directories(stb PUBLIC vendor/stb)
+add_library(stb INTERFACE)
+target_include_directories(stb INTERFACE vendor/stb)
 link_libraries(stb)
 
 include_directories("code")
