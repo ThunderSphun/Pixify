@@ -12,6 +12,7 @@ fi
 
 if [[ ! -d "build" ]] then
 	echo "no build directory exists"
+	popd > /dev/null
 	exit -1
 fi
 

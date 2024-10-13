@@ -23,10 +23,11 @@ cd build
 echo ""
 echo "running CMake"
 cmake ..
-if [[ $? -ne 0 ]] then
-	echo "CMake failed, exit code $?"
-	popd
-	exit -1
+result=$?
+if [[ $result -ne 0 ]] then
+	echo "CMake failed, exit code $result"
+	popd > /dev/null
+	exit $result
 fi
 
 echo ""
@@ -35,6 +36,8 @@ make
 result=$?
 if [[ $result -ne 0 ]] then
 	echo "Make failed, exit code $result"
+	popd > /dev/null
+	exit $result
 fi
 
 popd > /dev/null

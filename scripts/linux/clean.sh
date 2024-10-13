@@ -11,6 +11,7 @@ else
 fi
 
 if [[ ! -d "build" ]] then
+	popd > /dev/null
 	exit 0
 fi
 
