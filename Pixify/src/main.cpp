@@ -1,15 +1,23 @@
 #include <iostream>
 
-#include <startup.h>
+#include <lifetime.h>
 
-void Startup::preInit(int argc, char** argv) {
+Application::Specs Lifetime::preInit(int argc, char** argv) {
 	std::cout << "before init code" << std::endl;
+
+	return Application::Specs{};
 }
 
-void Startup::postInit(int argc, char** argv) {
+void Lifetime::postInit(int argc, char** argv) {
 	std::cout << "after init code" << std::endl;
 }
 
-std::unique_ptr<Application::App> Startup::createApplication(int argc, char** argv) {
-	return std::make_unique<Application::App>(nullptr);
+void Lifetime::preShutdown() {
+	std::cout << "before shutdown code" << std::endl;
+}
+
+int Lifetime::postShutdown() {
+	std::cout << "after shutdown code" << std::endl;
+
+	return EXIT_SUCCESS;
 }

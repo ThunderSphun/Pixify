@@ -14,7 +14,17 @@ set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 add_subdirectory(vendor/glfw)
 
 # Dear ImGui doesn't have a cmake file, so lets construct a library in place
-add_library(DearImGui STATIC vendor/dearImgui/imgui.cpp vendor/dearImgui/imgui_demo.cpp vendor/dearImgui/imgui_draw.cpp vendor/dearImgui/imgui_tables.cpp vendor/dearImgui/imgui_widgets.cpp vendor/dearImgui/misc/cpp/imgui_stdlib.cpp vendor/dearImgui/backends/imgui_impl_opengl3.cpp vendor/dearImgui/backends/imgui_impl_glfw.cpp)
+add_library(DearImGui STATIC
+	vendor/dearImgui/imgui.cpp
+	vendor/dearImgui/imgui_demo.cpp
+	vendor/dearImgui/imgui_draw.cpp
+	vendor/dearImgui/imgui_tables.cpp
+	vendor/dearImgui/imgui_widgets.cpp
+
+	vendor/dearImgui/misc/cpp/imgui_stdlib.cpp
+	vendor/dearImgui/backends/imgui_impl_opengl3.cpp
+	
+	vendor/dearImgui/backends/imgui_impl_glfw.cpp)
 target_include_directories(DearImGui PUBLIC vendor/dearImgui vendor/dearImgui/misc/cpp)
 # Dear ImGui must be linked against glfw for its backend
 target_link_libraries(DearImGui glfw)
