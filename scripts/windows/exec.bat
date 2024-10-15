@@ -18,15 +18,15 @@ IF NOT EXIST "build" (
 
 CD build
 
-IF NOT EXIST "pixify.sln" goto noMSVC
+IF EXIST "pixify.sln" goto MSVC
 
-REM assume msvc is used
-REM change to build directory
+CD Pixify
+PixifyEditor.exe
 
-CD Debug
-REM rest is normal
+POPD
+EXIT /b 0
 
-:noMSVC
-pixify.exe
-
+:MSVC
+CD Pixify/Debug
+PixifyEditor.exe
 POPD
