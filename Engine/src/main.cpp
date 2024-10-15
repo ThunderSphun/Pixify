@@ -6,4 +6,8 @@ int main(int argc, char** argv) {
 	// init code
 
 	Startup::postInit(argc, argv);
+
+	std::unique_ptr<Application::App> app = Startup::createApplication(argc, argv);
+
+	return EXIT_SUCCESS;
 }
