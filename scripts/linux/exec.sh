@@ -18,6 +18,6 @@ fi
 
 cd build
 
-./pixify
+./Pixify/PixifyEditor
 
 popd > /dev/null
