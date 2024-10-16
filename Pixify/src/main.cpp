@@ -1,23 +1,13 @@
+#include "engine.h"
+
 #include <iostream>
 
-#include <lifetime.h>
+int main(int argc, char** argv) {
+	EngineSpecs specs;
+	
+	specs.lifetime.postInit = [](){std::cout << "initialized" << std::endl;};
 
-Application::Specs Lifetime::preInit(int argc, char** argv) {
-	std::cout << "before init code" << std::endl;
+	specs.application.title = "Pixify";
 
-	return Application::Specs{};
-}
-
-void Lifetime::postInit(int argc, char** argv) {
-	std::cout << "after init code" << std::endl;
-}
-
-void Lifetime::preShutdown() {
-	std::cout << "before shutdown code" << std::endl;
-}
-
-int Lifetime::postShutdown() {
-	std::cout << "after shutdown code" << std::endl;
-
-	return EXIT_SUCCESS;
+	return Engine::launch(specs);
 }

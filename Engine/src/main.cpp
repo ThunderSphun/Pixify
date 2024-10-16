@@ -1,4 +1,4 @@
-#include "lifetime.h"
+#include "engine.h"
 
 #include <GLFW/glfw3.h>
 #include <imgui.h>
@@ -7,10 +7,9 @@
 
 #include <iostream>
 
-Application::Handler nullHandler = Application::Handler{};
-
-int main(int argc, char** argv) {
-	Application::Specs specs = Lifetime::preInit(argc, argv);
+int Engine::launch(const EngineSpecs& specs) {
+	if (specs.lifetime.preInit)
+		specs.lifetime.preInit();
 
 	if (!glfwInit()) {
 		const static char* errorDescription;
@@ -22,7 +21,7 @@ int main(int argc, char** argv) {
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 
-	GLFWwindow* window = glfwCreateWindow(specs.width, specs.height, specs.title, nullptr, nullptr);
+	GLFWwindow* window = glfwCreateWindow(specs.application.width, specs.application.height, specs.application.title, nullptr, nullptr);
 	if (window == nullptr) {
 		const static char* errorDescription;
 		glfwGetError(&errorDescription);
@@ -44,7 +43,8 @@ int main(int argc, char** argv) {
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init("#version 130");
 
-	Lifetime::postInit(argc, argv);
+	if (specs.lifetime.postInit)
+		specs.lifetime.postInit();
 
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents();
@@ -62,9 +62,9 @@ int main(int argc, char** argv) {
 
 		ImGui::Render();
 		int displayWidth;
-		int displayHeigh;
-		glfwGetFramebufferSize(window, &displayWidth, &displayHeigh);
-		glViewport(0, 0, displayWidth, displayHeigh);
+		int displayHeight;
+		glfwGetFramebufferSize(window, &displayWidth, &displayHeight);
+		glViewport(0, 0, displayWidth, displayHeight);
 		glClearColor(0.95f, 0.32f, 0.11f, 1.f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -72,7 +72,8 @@ int main(int argc, char** argv) {
 		glfwSwapBuffers(window);
 	}
 
-	Lifetime::preShutdown();
+	if (specs.lifetime.preExit)
+		specs.lifetime.preExit();
 
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
@@ -80,5 +81,8 @@ int main(int argc, char** argv) {
 	glfwDestroyWindow(window);
 	glfwTerminate();
 
-	return Lifetime::postShutdown();
+	if (specs.lifetime.postExit)
+		return specs.lifetime.postExit();
+	else
+		return 0;
 }
